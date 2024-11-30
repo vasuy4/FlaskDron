@@ -9,3 +9,8 @@ def send_command(command: str) -> str:
         s.sendall(command.encode())  # Отправляем команду
         response = s.recv(1024).decode()  # Получаем ответ
         return response
+
+
+if __name__ == '__main__':
+    request: str = send_command("LSERVO_10\n")
+    print(request)
