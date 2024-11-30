@@ -1,10 +1,8 @@
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 
 @app.route("/")
 def main_menu():
-    # response = send_command(command)
-    # print("Response:", response)
-    return "Hello bebra"
+    return render_template("index.html")
