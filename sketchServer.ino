@@ -54,13 +54,10 @@ void loop() {
           // Извлекаем подстроку после символа подчеркивания и преобразуем в целое число
           int value = atoi(command.substring(underscorePos + 1).c_str());
 
-          if (prefix == "LSERVO") {
+          if (prefix == "SERVO") {
             myServo.write(value);
             Serial.print("Set angle to: ");
             Serial.println(value);
-            client.print(command);
-          } else if (prefix == "RSERVO") {
-            // Код для правого сервопривода
             client.print(command);
           } else if (prefix == "LENGINE") {
             // Код для левого двигателя

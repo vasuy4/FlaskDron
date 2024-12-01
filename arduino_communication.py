@@ -1,3 +1,5 @@
+import time
+
 from config import arduino_ip, arduino_port
 import socket
 
@@ -12,5 +14,5 @@ def send_command(command: str) -> str:
 
 
 if __name__ == '__main__':
-    request: str = send_command("LSERVO_10\n")
+    request: str = send_command("SERVO_10\n")
     print(request)
