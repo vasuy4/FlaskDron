@@ -50,3 +50,21 @@ button {
 .sensorsData {
     margin-left: 10px;
 }
+
+.slider_servo {
+    writing-mode: bt-lr; /* IE */
+    -webkit-appearance: slider-vertical; /* Chromium */
+    width: 8px;
+    height: 100px;
+    padding: 0 5px;
+}
+
+.control_servo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.margin2 {
+    margin: 2px;
+}
