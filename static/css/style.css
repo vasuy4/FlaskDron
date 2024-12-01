@@ -51,7 +51,7 @@ button {
     margin-left: 10px;
 }
 
-.slider_servo {
+.slider_servo_engine {
     writing-mode: bt-lr; /* IE */
     -webkit-appearance: slider-vertical; /* Chromium */
     width: 8px;
@@ -59,7 +59,7 @@ button {
     padding: 0 5px;
 }
 
-.control_servo {
+.control_servo_engine {
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -26,13 +26,22 @@
 
         <div class="controlChild">
           
-          <div class="control_servo">
+          <div class="control_servo_engine">
             <p class="margin2">Servo</p>
             <p class="margin2"><span id="slider_value_servo">0</span></p>
             <p class="margin2">90</p>
-            <input type="range" min="-90" max="90" id="slider_servo" class="slider_servo margin2" />
+            <input type="range" min="-90" max="90" id="slider_servo" class="slider_servo_engine margin2" />
             <p class="margin2">-90</p>
           </div>
+
+          <div class="control_servo_engine">
+            <p class="margin2">Engine1</p>
+            <p class="margin2"><span id="slider_value_engine1">0</span></p>
+            <p class="margin2">90</p>
+            <input type="range" min="-90" max="90" id="slider_engine1" class="slider_servo_engine margin2" />
+            <p class="margin2">-90</p>
+          </div>
+          
 
         </div>
       </div>
@@ -60,18 +69,18 @@
                 });
             });
 
-<!--            $('#slider_rservo').on('input', function() {-->
-<!--                var sliderValue = $(this).val();-->
-<!--                $.ajax({-->
-<!--                    url: '/update_slider',-->
-<!--                    type: 'POST',-->
-<!--                    contentType: 'application/json',-->
-<!--                    data: JSON.stringify({'slider_rservo': sliderValue}),-->
-<!--                    success: function(response) {-->
-<!--                        $('#slider_value_rservo').text(response.slider_value_rservo);-->
-<!--                    }-->
-<!--                });-->
-<!--            });-->
+            $('#slider_engine1').on('input', function() {
+                var sliderValue = $(this).val();
+                $.ajax({
+                    url: '/update_slider',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({'slider_engine1': sliderValue}),
+                    success: function(response) {
+                        $('#slider_value_engine1').text(response.slider_value_engine1);
+                    }
+                });
+            });
         });
     </script>
   </body>
