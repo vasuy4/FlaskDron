@@ -1,10 +1,13 @@
-import time
-
 from config import arduino_ip, arduino_port
 import socket
 
 
 def send_command(command: str) -> str:
+    """
+    Отправление команды на ардуино
+    :param command: команда
+    :return: ответ от ардуино
+    """
     # Подключение к Arduino
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.connect((arduino_ip, arduino_port))
@@ -13,6 +16,6 @@ def send_command(command: str) -> str:
         return response
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     request: str = send_command("SERVO_10\n")
     print(request)
