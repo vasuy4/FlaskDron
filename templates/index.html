@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UnderWaterDron</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    <div class="controlPanel">
+      <div class="control">
+
+        <div class="monitor">
+            <img src="{{ url_for('static', filename='images/dron.gif') }}" alt="dron">
+        </div>
+
+        <div class="controlChild">
+          <div class="leftRight">
+            <button><img src="{{ url_for('static', filename='images/left.svg') }}" alt="left" /></button>
+            <button><img src="{{ url_for('static', filename='images/right.svg') }}" alt="right" /></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sensorsData">
+        <p>t° =</p>
+        <p>p =</p>
+        <p>l =</p>
+      </div>
+    </div>
+  </body>
+</html>
