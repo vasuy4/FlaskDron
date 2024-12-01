@@ -12,6 +12,7 @@ def main_menu():
 def update_slider():
     slider_servo = request.json.get("slider_servo")
     slider_engine_left = request.json.get("slider_engine_left")
+    slider_engine_right = request.json.get("slider_engine_right")
 
     # Здесь можно добавить логику для обработки значений слайдеров, например, проверку диапазона
 
@@ -20,6 +21,8 @@ def update_slider():
         response_data['slider_value_servo'] = slider_servo
     if slider_engine_left is not None:
         response_data['slider_value_engine_left'] = slider_engine_left
+    if slider_engine_right is not None:
+        response_data['slider_value_engine_right'] = slider_engine_right
 
     return jsonify(response_data)
 

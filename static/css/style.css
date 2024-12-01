@@ -68,3 +68,12 @@ button {
 .margin2 {
     margin: 2px;
 }
+
+.control_block {
+    display: flex;
+    margin-left: 100px;
+}
+
+.margin_left20 {
+    margin-left: 20px;
+}

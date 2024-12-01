@@ -34,14 +34,23 @@
             <p class="margin2">-90</p>
           </div>
 
-          <div class="control_servo_engine">
-            <p class="margin2">Engine1</p>
-            <p class="margin2"><span id="slider_value_engine_left">0</span></p>
-            <p class="margin2">90</p>
-            <input type="range" min="-90" max="90" id="slider_engine_left" class="slider_servo_engine margin2" />
-            <p class="margin2">-90</p>
-          </div>
+          <div class="control_block">
+            <div class="control_servo_engine">
+              <p class="margin2">Engine left</p>
+              <p class="margin2"><span id="slider_value_engine_left">0</span></p>
+              <p class="margin2">90</p>
+              <input type="range" min="-90" max="90" id="slider_engine_left" class="slider_servo_engine margin2" />
+              <p class="margin2">-90</p>
+            </div>
 
+            <div class="control_servo_engine margin_left20">
+              <p class="margin2">Engine right</p>
+              <p class="margin2"><span id="slider_value_engine_right">0</span></p>
+              <p class="margin2">90</p>
+              <input type="range" min="-90" max="90" id="slider_engine_right" class="slider_servo_engine margin2" />
+              <p class="margin2">-90</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -77,6 +86,19 @@
                     data: JSON.stringify({'slider_engine_left': sliderValue}),
                     success: function(response) {
                         $('#slider_value_engine_left').text(response.slider_value_engine_left);
+                    }
+                });
+            });
+
+            $('#slider_engine_right').on('input', function() {
+                var sliderValue = $(this).val();
+                $.ajax({
+                    url: '/update_slider',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({'slider_engine_right': sliderValue}),
+                    success: function(response) {
+                        $('#slider_value_engine_right').text(response.slider_value_engine_right);
                     }
                 });
             });
