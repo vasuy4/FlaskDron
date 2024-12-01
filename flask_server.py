@@ -59,7 +59,3 @@ def update_slider() -> Response:
         BUFFER["RENGINE"][0] = value_command
         BUFFER["RENGINE"][2] = False
     return jsonify(response_data)
-
-
-if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
