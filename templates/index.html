@@ -36,12 +36,11 @@
 
           <div class="control_servo_engine">
             <p class="margin2">Engine1</p>
-            <p class="margin2"><span id="slider_value_engine1">0</span></p>
+            <p class="margin2"><span id="slider_value_engine_left">0</span></p>
             <p class="margin2">90</p>
-            <input type="range" min="-90" max="90" id="slider_engine1" class="slider_servo_engine margin2" />
+            <input type="range" min="-90" max="90" id="slider_engine_left" class="slider_servo_engine margin2" />
             <p class="margin2">-90</p>
           </div>
-          
 
         </div>
       </div>
@@ -69,15 +68,15 @@
                 });
             });
 
-            $('#slider_engine1').on('input', function() {
+            $('#slider_engine_left').on('input', function() {
                 var sliderValue = $(this).val();
                 $.ajax({
                     url: '/update_slider',
                     type: 'POST',
                     contentType: 'application/json',
-                    data: JSON.stringify({'slider_engine1': sliderValue}),
+                    data: JSON.stringify({'slider_engine_left': sliderValue}),
                     success: function(response) {
-                        $('#slider_value_engine1').text(response.slider_value_engine1);
+                        $('#slider_value_engine_left').text(response.slider_value_engine_left);
                     }
                 });
             });
