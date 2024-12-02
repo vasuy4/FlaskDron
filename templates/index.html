@@ -21,7 +21,7 @@
       <div class="control">
 
         <div class="monitor">
-            <img src="{{ url_for('static', filename='images/dron.gif') }}" alt="dron">
+<!--            <img src="{{ url_for('static', filename='images/dron.gif') }}" alt="dron">-->
         </div>
 
         <div class="controlChild">
@@ -35,21 +35,47 @@
           </div>
 
           <div class="control_block">
-            <div class="control_servo_engine">
-              <p class="margin2">Engine left</p>
-              <p class="margin2"><span id="slider_value_engine_left">0</span></p>
-              <p class="margin2">90</p>
-              <input type="range" min="-90" max="90" id="slider_engine_left" class="slider_servo_engine margin2" />
-              <p class="margin2">-90</p>
+            <div class="control_engines">
+              <div class="control_servo_engine">
+                <p class="margin2">EngineL</p>
+                <p class="margin2"><span id="slider_value_engine_left">0</span></p>
+                <p class="margin2">90</p>
+                <input type="range" min="-90" max="90" id="slider_engine_left" class="slider_servo_engine margin2" />
+                <p class="margin2">-90</p>
+              </div>
+  
+              <div class="control_servo_engine margin_left20">
+                <p class="margin2">EngineR</p>
+                <p class="margin2"><span id="slider_value_engine_right">0</span></p>
+                <p class="margin2">90</p>
+                <input type="range" min="-90" max="90" id="slider_engine_right" class="slider_servo_engine margin2" />
+                <p class="margin2">-90</p>
+              </div>
             </div>
 
-            <div class="control_servo_engine margin_left20">
-              <p class="margin2">Engine right</p>
-              <p class="margin2"><span id="slider_value_engine_right">0</span></p>
-              <p class="margin2">90</p>
-              <input type="range" min="-90" max="90" id="slider_engine_right" class="slider_servo_engine margin2" />
-              <p class="margin2">-90</p>
+            <div class="control_speed_direction">
+              <div class="control_speed">
+                <p class="margin2">Speed</p>
+                <p class="margin2"><span id="slider_value_speed">0</span></p>
+                <p class="margin2">90</p>
+                <input type="range" min="-90" max="90" id="slider_speed" class="slider_servo_engine margin2" />
+                <p class="margin2">-90</p>
+              </div>
+  
+              <div class="control_direction margin_left20">
+                <p class="margin2">Direction</p>
+                <p class="margin2"><span id="slider_value_direction">0</span></p>
+                <div class="flex">
+                  <p>L</p>
+                  <input type="range" min="-90" max="90" id="slider_direction" class="margin2" />
+                  <p>R</p>
+                </div>
+              </div>
             </div>
+          </div>
+
+          <div class="controlChild">
+
           </div>
         </div>
       </div>

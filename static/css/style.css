@@ -70,10 +70,33 @@ button {
 }
 
 .control_block {
-    display: flex;
     margin-left: 100px;
 }
 
 .margin_left20 {
     margin-left: 20px;
+}
+
+.control_engines {
+    display: flex;
+}
+
+.control_speed_direction {
+    display: flex;
+}
+
+.control_speed {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.control_direction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.flex {
+    display: flex;
 }
