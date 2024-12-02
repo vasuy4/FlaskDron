@@ -43,7 +43,10 @@ def update_slider() -> Response:
     slider_servo = request.json.get("slider_servo")
     slider_engine_left = request.json.get("slider_engine_left")
     slider_engine_right = request.json.get("slider_engine_right")
+    slider_now_speed = request.json.get("slider_engine_now_speed")
+    slider_direction = request.json.get("slider_direction")
 
+    print('speed', slider_now_speed)
     response_data = {}
 
     if slider_servo is not None:
@@ -53,12 +56,14 @@ def update_slider() -> Response:
         BUFFER["SERVO"][2] = False
     if slider_engine_left is not None:
         response_data["slider_value_engine_left"] = slider_engine_left
+        response_data["slider_value_speed"] = int(slider_engine_left) / 2 + int(slider_now_speed or 0)
 
         value_command: int = min(max(int(slider_engine_left) + 90, 10), 179)
         BUFFER["LENGINE"][0] = value_command
         BUFFER["LENGINE"][2] = False
     if slider_engine_right is not None:
         response_data["slider_value_engine_right"] = slider_engine_right
+        response_data["slider_value_speed"] = int(slider_engine_right) / 2 + int(slider_now_speed or 0)
 
         value_command: int = min(max(int(slider_engine_right) + 90, 10), 179)
         BUFFER["RENGINE"][0] = value_command
