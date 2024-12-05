@@ -90,6 +90,11 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
+            function updateSlider(sliderId, sliderValueId, value) {
+              $("#" + sliderId).val(value).trigger("input");
+              $("#" + sliderValueId).text(value);
+            }
+
             $('#slider_servo').on('input', function() {
                 var sliderValue = $(this).val();
                 $.ajax({
@@ -116,7 +121,8 @@
                     }),
                     success: function(response) {
                         $('#slider_value_engine_left').text(response.slider_value_engine_left);
-                        $('#slider_value_speed').text(response.slider_value_speed);
+                        updateSlider("slider_speed", "slider_value_speed", response.slider_value_speed);
+                        updateSlider("slider_direction", "slider_value_direction",response.slider_value_direction);
                     }
                 });
             });
@@ -124,6 +130,7 @@
             $('#slider_engine_right').on('input', function() {
                 var sliderValue = $(this).val();
                 var sliderValueLeft = $("#slider_engine_left").val();
+                
                 $.ajax({
                     url: '/update_slider',
                     type: 'POST',
@@ -134,7 +141,8 @@
                     }),
                     success: function(response) {
                         $('#slider_value_engine_right').text(response.slider_value_engine_right);
-                        $('#slider_value_speed').text(response.slider_value_speed);
+                        updateSlider("slider_speed", "slider_value_speed", response.slider_value_speed);
+                        updateSlider("slider_direction", "slider_value_direction",response.slider_value_direction);
                     }
                 });
             });

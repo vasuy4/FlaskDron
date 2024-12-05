@@ -58,6 +58,8 @@ def update_slider() -> Response:
     if slider_engine_left is not None:
         response_data["slider_value_engine_left"] = slider_engine_left
         response_data["slider_value_speed"] = (int(slider_engine_left) + int(slider_engine_right_secondary)) / 2
+        response_data["slider_value_direction"] = (int(slider_engine_left) - int(slider_engine_right_secondary)) / 2
+
 
         value_command: int = min(max(int(slider_engine_left) + 90, 10), 179)
         BUFFER["LENGINE"][0] = value_command
@@ -65,6 +67,7 @@ def update_slider() -> Response:
     if slider_engine_right is not None:
         response_data["slider_value_engine_right"] = slider_engine_right
         response_data["slider_value_speed"] = (int(slider_engine_right) + int(slider_engine_left_secondary)) / 2
+        response_data["slider_value_direction"] = (int(slider_engine_left_secondary) - int(slider_engine_right)) / 2
 
         value_command: int = min(max(int(slider_engine_right) + 90, 10), 179)
         BUFFER["RENGINE"][0] = value_command
