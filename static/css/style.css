@@ -100,3 +100,19 @@ button {
 .flex {
     display: flex;
 }
+
+.slider_horizontal {
+    writing-mode: bt-lr; /* IE */
+    -webkit-appearance: slider-horizontal; /* Chromium */
+    width: 200px;
+    height: 8px; /* Увеличиваем высоту для лучшего отображения */
+    padding: 0 5px;
+}
+
+.slider_vertical {
+    writing-mode: bt-lr; /* IE */
+    -webkit-appearance: slider-vertical; /* Chromium */
+    width: 8px;
+    height: 200px; /* Увеличиваем высоту для лучшего отображения */
+    padding: 0 5px;
+}

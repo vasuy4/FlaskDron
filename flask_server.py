@@ -1,5 +1,5 @@
 from arduino_communication import send_command
-from flask import Flask, render_template, request, jsonify, Response
+from flask import Flask, render_template, request, jsonify, Response, send_from_directory
 import time
 from typing import Dict, List, Union
 
@@ -33,6 +33,12 @@ def auto_update() -> None:
 @app.route("/")
 def main_menu():
     return render_template("index.html")
+
+
+@app.route("/js/<path:filename>")
+def serve_js(filename):
+    return send_from_directory("templates/js", filename)
+
 
 
 @app.route("/update_slider", methods=["POST"])
