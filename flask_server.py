@@ -44,7 +44,7 @@ def update_slider() -> Response:
     slider_engine_left = request.json.get("slider_engine_left")
     slider_engine_right = request.json.get("slider_engine_right")
     slider_now_speed = request.json.get("slider_engine_now_speed")
-    slider_direction = request.json.get("slider_direction")
+    # slider_direction = request.json.get("slider_direction")
 
     print('speed', slider_now_speed)
     response_data = {}
