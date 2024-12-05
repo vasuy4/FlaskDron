@@ -36,6 +36,7 @@ $(document).ready(function () {
       data: JSON.stringify({
         slider_engine_left: sliderValue,
         slider_engine_right_secondary: sliderValueRight,
+        anchor_value: "slider_engine_left",
       }),
       success: function (response) {
         $("#slider_value_engine_left").text(response.slider_value_engine_left);
@@ -66,6 +67,7 @@ $(document).ready(function () {
       data: JSON.stringify({
         slider_engine_right: sliderValue,
         slider_engine_left_secondary: sliderValueLeft,
+        anchor_value: "slider_engine_right",
       }),
       success: function (response) {
         $("#slider_value_engine_right").text(
@@ -98,6 +100,7 @@ $(document).ready(function () {
       data: JSON.stringify({
         slider_speed: sliderValue,
         slider_direction_secondary: sliderValueDirection,
+        anchor_value: "slider_speed",
       }),
       success: function (response) {
         $("#slider_value_speed").text(response.slider_value_speed);
@@ -133,6 +136,7 @@ $(document).ready(function () {
       data: JSON.stringify({
         slider_direction: sliderValue,
         slider_speed_secondary: sliderValueSpeed,
+        anchor_value: "slider_direction",
       }),
       success: function (response) {
         $("#slider_value_direction").text(response.slider_value_direction);
