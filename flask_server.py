@@ -1,7 +1,7 @@
 from arduino_communication import send_command
 from flask import Flask, render_template, request, jsonify, Response, send_from_directory
 import time
-from typing import Dict, List, Union
+from typing import Dict, List, Union, Tuple
 
 app = Flask(__name__)
 
@@ -51,8 +51,14 @@ def update_slider() -> Response:
     slider_engine_left = request.json.get("slider_engine_left")
     slider_engine_right = request.json.get("slider_engine_right")
 
+    slider_speed = request.json.get("slider_speed")
+    slider_direction = request.json.get("slider_direction")
+
     slider_engine_left_secondary = request.json.get("slider_engine_left_secondary")
     slider_engine_right_secondary = request.json.get("slider_engine_right_secondary")
+
+    slider_speed_secondary = request.json.get("slider_speed_secondary")
+    slider_direction_secondary = request.json.get("slider_direction_secondary")
 
     response_data = {}
 
@@ -66,7 +72,6 @@ def update_slider() -> Response:
         response_data["slider_value_speed"] = (int(slider_engine_left) + int(slider_engine_right_secondary)) / 2
         response_data["slider_value_direction"] = (int(slider_engine_left) - int(slider_engine_right_secondary)) / 2
 
-
         value_command: int = min(max(int(slider_engine_left) + 90, 10), 179)
         BUFFER["LENGINE"][0] = value_command
         BUFFER["LENGINE"][2] = False
@@ -78,4 +83,44 @@ def update_slider() -> Response:
         value_command: int = min(max(int(slider_engine_right) + 90, 10), 179)
         BUFFER["RENGINE"][0] = value_command
         BUFFER["RENGINE"][2] = False
+    if slider_speed is not None:
+        val_eng_left: int = int(slider_speed) + int(slider_direction_secondary)
+        val_eng_right: int = int(slider_speed) - int(slider_direction_secondary)
+        remainsL: int = 0
+        remainsR: int = 0
+        if abs(val_eng_left) > 90:
+            if val_eng_left < 0:
+                remainsL = val_eng_left + 90
+            else:
+                remainsL = val_eng_left - 90
+        elif abs(val_eng_right) > 90:
+            if val_eng_right < 0:
+                remainsR = val_eng_right + 90
+            else:
+                remainsR = val_eng_right - 90
+
+        response_data["slider_value_speed"] = slider_speed
+        response_data["slider_value_engine_left"] = max(min(val_eng_left, 90), -90)
+        response_data["slider_value_engine_right"] = max(min(val_eng_right, 90), -90)
+        response_data["slider_value_direction"] = int(slider_direction_secondary) + remainsR - remainsL
+    if slider_direction is not None:
+        val_eng_left: int = int(slider_speed_secondary) + int(slider_direction)
+        val_eng_right: int = int(slider_speed_secondary) - int(slider_direction)
+        remainsL: int = 0
+        remainsR: int = 0
+        if abs(val_eng_left) > 90:
+            if val_eng_left < 0:
+                remainsL = val_eng_left + 90
+            else:
+                remainsL = val_eng_left - 90
+        elif abs(val_eng_right) > 90:
+            if val_eng_right < 0:
+                remainsR = val_eng_right + 90
+            else:
+                remainsR = val_eng_right - 90
+
+        response_data["slider_value_direction"] = slider_direction
+        response_data["slider_value_engine_left"] = max(min(val_eng_left, 90), -90)
+        response_data["slider_value_engine_right"] = max(min(val_eng_right, 90), -90)
+        response_data["slider_value_speed"] = int(slider_speed_secondary) - (remainsL + remainsR) / 2
     return jsonify(response_data)
