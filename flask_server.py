@@ -12,7 +12,7 @@ app = Flask(__name__)
 2) Последняя отправка на ардуино
 3) Было ли отправлено это значение
 """
-BUFFER: Dict[str, List[Union[int, float, bool]]] = {
+BUFFER: Dict[str, List[Union[float, float, bool]]] = {
     "SERVO": [90, time.time(), True],
     "LENGINE": [90, time.time(), True],
     "RENGINE": [90, time.time(), True],
@@ -64,30 +64,30 @@ def update_slider() -> Response:
 
     if slider_servo is not None:
         response_data["slider_value_servo"] = slider_servo
-        value_command: int = min(max(int(slider_servo) + 90, 10), 179)
+        value_command: float = min(max(float(slider_servo) + 90, 10), 179)
         BUFFER["SERVO"][0] = value_command
         BUFFER["SERVO"][2] = False
     if slider_engine_left is not None:
         response_data["slider_value_engine_left"] = slider_engine_left
-        response_data["slider_value_speed"] = (int(slider_engine_left) + int(slider_engine_right_secondary)) / 2
-        response_data["slider_value_direction"] = (int(slider_engine_left) - int(slider_engine_right_secondary)) / 2
+        response_data["slider_value_speed"] = (float(slider_engine_left) + float(slider_engine_right_secondary)) / 2
+        response_data["slider_value_direction"] = (float(slider_engine_left) - float(slider_engine_right_secondary)) / 2
 
-        value_command: int = min(max(int(slider_engine_left) + 90, 10), 179)
+        value_command: float = min(max(float(slider_engine_left) + 90, 10), 179)
         BUFFER["LENGINE"][0] = value_command
         BUFFER["LENGINE"][2] = False
     if slider_engine_right is not None:
         response_data["slider_value_engine_right"] = slider_engine_right
-        response_data["slider_value_speed"] = (int(slider_engine_right) + int(slider_engine_left_secondary)) / 2
-        response_data["slider_value_direction"] = (int(slider_engine_left_secondary) - int(slider_engine_right)) / 2
+        response_data["slider_value_speed"] = (float(slider_engine_right) + float(slider_engine_left_secondary)) / 2
+        response_data["slider_value_direction"] = (float(slider_engine_left_secondary) - float(slider_engine_right)) / 2
 
-        value_command: int = min(max(int(slider_engine_right) + 90, 10), 179)
+        value_command: float = min(max(float(slider_engine_right) + 90, 10), 179)
         BUFFER["RENGINE"][0] = value_command
         BUFFER["RENGINE"][2] = False
     if slider_speed is not None:
-        val_eng_left: int = int(slider_speed) + int(slider_direction_secondary)
-        val_eng_right: int = int(slider_speed) - int(slider_direction_secondary)
-        remainsL: int = 0
-        remainsR: int = 0
+        val_eng_left: float = float(slider_speed) + float(slider_direction_secondary)
+        val_eng_right: float = float(slider_speed) - float(slider_direction_secondary)
+        remainsL: float = 0
+        remainsR: float = 0
         if abs(val_eng_left) > 90:
             if val_eng_left < 0:
                 remainsL = val_eng_left + 90
@@ -102,25 +102,32 @@ def update_slider() -> Response:
         response_data["slider_value_speed"] = slider_speed
         response_data["slider_value_engine_left"] = max(min(val_eng_left, 90), -90)
         response_data["slider_value_engine_right"] = max(min(val_eng_right, 90), -90)
-        response_data["slider_value_direction"] = int(slider_direction_secondary) + remainsR - remainsL
+        response_data["slider_value_direction"] = float(slider_direction_secondary) + remainsR - remainsL
     if slider_direction is not None:
-        val_eng_left: int = int(slider_speed_secondary) + int(slider_direction)
-        val_eng_right: int = int(slider_speed_secondary) - int(slider_direction)
-        remainsL: int = 0
-        remainsR: int = 0
+        val_eng_left: float = float(slider_speed_secondary) + float(slider_direction)
+        val_eng_right: float = float(slider_speed_secondary) - float(slider_direction)
+        remainsL: float = 0
+        remainsR: float = 0
         if abs(val_eng_left) > 90:
             if val_eng_left < 0:
                 remainsL = val_eng_left + 90
             else:
                 remainsL = val_eng_left - 90
+            val_eng_right = val_eng_left - 2 * float(slider_direction)
         elif abs(val_eng_right) > 90:
             if val_eng_right < 0:
                 remainsR = val_eng_right + 90
             else:
                 remainsR = val_eng_right - 90
 
+        val_eng_left = max(min(val_eng_left, 90), -90)
+        val_eng_right = max(min(val_eng_right, 90), -90)
+        val_speed = float(slider_speed_secondary) - (remainsL + remainsR) / 2
+        print(f"remainL: {remainsL}, remainR: {remainsR}, engR: {val_eng_right}")
+
         response_data["slider_value_direction"] = slider_direction
-        response_data["slider_value_engine_left"] = max(min(val_eng_left, 90), -90)
-        response_data["slider_value_engine_right"] = max(min(val_eng_right, 90), -90)
-        response_data["slider_value_speed"] = int(slider_speed_secondary) - (remainsL + remainsR) / 2
+        response_data["slider_value_engine_left"] = val_eng_left
+        response_data["slider_value_engine_right"] = val_eng_right
+        response_data["slider_value_speed"] = val_speed
+
     return jsonify(response_data)
