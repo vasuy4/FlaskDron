@@ -17,10 +17,15 @@ button {
     justify-content: center;
 }
 
+.control {
+    display: flex;
+}
+
 .controlChild {
     width: 650px;
     display: flex;
-    justify-content: center
+    justify-content: center;
+    flex-direction: column;
 }
 
 .leftRight {
@@ -31,18 +36,14 @@ button {
 
 .monitor {
     margin: 10px;
-    width: 650px;
-    height: 360px;
+    width: 700px;
+    height: 400px;
     border: 2px solid black;
     border-radius: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden; /* Добавляем, чтобы GIF не выходил за пределы блока */
-}
-
-.monitors {
-    display: flex;
 }
 
 .monitor img {
@@ -83,6 +84,12 @@ button {
 
 .control_engines {
     display: flex;
+    justify-content: space-between;
+}
+
+.control_servoDir {
+    display: flex;
+    justify-content: center;
 }
 
 .control_speed_direction {
@@ -120,3 +127,38 @@ button {
     height: 200px; /* Увеличиваем высоту для лучшего отображения */
     padding: 0 5px;
 }
+
+.absolute {
+    position: absolute;
+}
+
+.zindex {
+    z-index: -1;
+}
+
+.dronImg {
+    margin-top: 60px;
+    width: 650px;
+}
+
+input[type=range] { 
+    accent-color: rgb(29, 202, 255);
+}
+
+.servoWordControl {
+    color: rgb(175, 235, 126);
+}
+
+.engineWordControl {
+    color: rgb(255, 217, 159);
+}
+
+.spdrWordControl {
+    color: rgb(255, 230, 2);
+}
+
+.backgroundColor {
+    background-color: rgba(0, 0, 0, 0.39);
+    border-radius: 10px;
+}
+
