@@ -63,6 +63,7 @@ def update_slider() -> Response:
     anchor_value = request.json.get("anchor_value")
 
     response_data = {}
+    need_recalculate = False
 
     if slider_servo is not None:
         response_data["slider_value_servo"] = slider_servo
@@ -71,57 +72,82 @@ def update_slider() -> Response:
         BUFFER["SERVO"][2] = False
     if slider_engine_left is not None:
         response_data["slider_value_engine_left"] = slider_engine_left
-        if anchor_value != "slider_engine_left":
-            response_data["slider_value_speed"] = (float(slider_engine_left) + float(slider_engine_right_secondary)) / 2
-            response_data["slider_value_direction"] = (float(slider_engine_left) - float(slider_engine_right_secondary)) / 2
+        response_data["slider_value_speed"] = (float(slider_engine_left) + float(slider_engine_right_secondary)) / 2
+        response_data["slider_value_direction"] = (float(slider_engine_left) - float(slider_engine_right_secondary)) / 2
 
         value_command: float = min(max(float(slider_engine_left) + 90, 10), 179)
         BUFFER["LENGINE"][0] = value_command
         BUFFER["LENGINE"][2] = False
     if slider_engine_right is not None:
         response_data["slider_value_engine_right"] = slider_engine_right
-        if anchor_value != "slider_engine_right":
-            response_data["slider_value_speed"] = (float(slider_engine_right) + float(slider_engine_left_secondary)) / 2
-            response_data["slider_value_direction"] = (float(slider_engine_left_secondary) - float(slider_engine_right)) / 2
+        response_data["slider_value_speed"] = (float(slider_engine_right) + float(slider_engine_left_secondary)) / 2
+        response_data["slider_value_direction"] = (float(slider_engine_left_secondary) - float(slider_engine_right)) / 2
 
         value_command: float = min(max(float(slider_engine_right) + 90, 10), 179)
         BUFFER["RENGINE"][0] = value_command
         BUFFER["RENGINE"][2] = False
     if slider_speed is not None:
+        val_eng_left: float = float(slider_speed) + float(slider_direction_secondary)
+        val_eng_right: float = float(slider_speed) - float(slider_direction_secondary)
+        remainsL: float = 0
+        remainsR: float = 0
+        if abs(val_eng_left) > 90:
+            if val_eng_left < 0:
+                remainsL = val_eng_left + 90
+            else:
+                remainsL = val_eng_left - 90
+            need_recalculate = True
+        elif abs(val_eng_right) > 90:
+            if val_eng_right < 0:
+                remainsR = val_eng_right + 90
+            else:
+                remainsR = val_eng_right - 90
+            need_recalculate = True
+
         response_data["slider_value_speed"] = slider_speed
-        if anchor_value != "slider_speed":
-            val_eng_left: float = float(slider_speed) + float(slider_direction_secondary)
-            val_eng_right: float = float(slider_speed) - float(slider_direction_secondary)
-            val_eng_left = max(min(val_eng_left, 90), -90)
-            val_eng_right = max(min(val_eng_right, 90), -90)
-
-            response_data["slider_value_engine_left"] = val_eng_left
-            response_data["slider_value_engine_right"] = val_eng_right
-            response_data["slider_value_direction"] = slider_direction_secondary
+        response_data["slider_value_engine_left"] = max(min(val_eng_left, 90), -90)
+        response_data["slider_value_engine_right"] = max(min(val_eng_right, 90), -90)
+        response_data["slider_value_direction"] = float(slider_direction_secondary) + remainsR - remainsL
     if slider_direction is not None:
+        val_eng_left: float = float(slider_speed_secondary) + float(slider_direction)
+        val_eng_right: float = float(slider_speed_secondary) - float(slider_direction)
+        remainsL: float = 0
+        remainsR: float = 0
+        if abs(val_eng_left) > 90:
+            if val_eng_left < 0:
+                remainsL = val_eng_left + 90
+            else:
+                remainsL = val_eng_left - 90
+            val_eng_right = val_eng_left - 2 * float(slider_direction)
+            need_recalculate = True
+        elif abs(val_eng_right) > 90:
+            if val_eng_right < 0:
+                remainsR = val_eng_right + 90
+            else:
+                remainsR = val_eng_right - 90
+            need_recalculate = True
+
+        val_eng_left = max(min(val_eng_left, 90), -90)
+        val_eng_right = max(min(val_eng_right, 90), -90)
+        val_speed = float(slider_speed_secondary) - (remainsL + remainsR) / 2
+        print(f"remainL: {remainsL}, remainR: {remainsR}, engR: {val_eng_right}")
+
         response_data["slider_value_direction"] = slider_direction
-        if anchor_value != "slider_direction":
-            val_eng_left: float = float(slider_speed_secondary) + float(slider_direction)
-            val_eng_right: float = float(slider_speed_secondary) - float(slider_direction)
-            val_eng_left = max(min(val_eng_left, 90), -90)
-            val_eng_right = max(min(val_eng_right, 90), -90)
+        response_data["slider_value_engine_left"] = val_eng_left
+        response_data["slider_value_engine_right"] = val_eng_right
+        response_data["slider_value_speed"] = val_speed
 
-            val_speed = (val_eng_left + val_eng_right) / 2
-
-            response_data["slider_value_engine_left"] = val_eng_left
-            response_data["slider_value_engine_right"] = val_eng_right
-            response_data["slider_value_speed"] = val_speed
-
-    # Контрольный перерасчет значений
-    recalculate_values(response_data, anchor_value)
+    if need_recalculate:
+        recalculate_values(response_data, anchor_value)
 
     return jsonify(response_data)
 
 
-def recalculate_values(response_data, anchor_value):
+def recalculate_values(response_data: dict, anchor_value: str) -> None:
     """
     Контрольный перерасчет значений для исправления ошибок
     """
+    print(f"recalculate {anchor_value}")
     speed = float(response_data.get("slider_value_speed", 0))
     direction = float(response_data.get("slider_value_direction", 0))
     engine_left = float(response_data.get("slider_value_engine_left", 0))
@@ -133,6 +159,7 @@ def recalculate_values(response_data, anchor_value):
 
     # Проверяем, выходят ли значения за пределы
     if engine_left != recalculated_engine_left or engine_right != recalculated_engine_right:
+        print(f"limit\nLeft: {engine_left}:{recalculated_engine_left}\nRight: {engine_right}:{recalculated_engine_right}")
         if anchor_value != "slider_engine_left":
             response_data["slider_value_engine_left"] = recalculated_engine_left
         if anchor_value != "slider_engine_right":
