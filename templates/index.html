@@ -8,14 +8,14 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/script.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
-
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
   </head>
   <body>
     <div class="controlPanel">
       <div class="control">
         <div class="controlChild">
           <img src="../static/images/Dron.png" alt="dron" class="absolute zindex dronImg">
-          
+
           <div class="control_servoDir margin2">
             <div class="control_direction backgroundColor">
               <p class="margin2 spdrWordControl">Direction</p>
@@ -71,10 +71,10 @@
 
         <div class="monitors">
           <div class="monitor">
-  <!--            <img src="{{ url_for('static', filename='images/dron.gif') }}" alt="dron"> Видео--> 
+  <!--            <img src="{{ url_for('static', filename='images/dron.gif') }}" alt="dron"> Видео-->
           </div>
           <div class="monitor">
-            <!--            <img src="{{ url_for('static', filename='images/dron.gif') }}" alt="dron"> Положение дрона-->
+            <canvas id="renderCanvas" style="width: 100%; height: 100%;"></canvas>
           </div>
         </div>
 
@@ -87,5 +87,27 @@
       </div>
     </div>
 
+    <script>
+      const canvas = document.getElementById("renderCanvas");
+      const engine = new BABYLON.Engine(canvas, true);
+
+      const createScene = function () {
+          const scene = new BABYLON.Scene(engine);
+          const camera = new BABYLON.ArcRotateCamera("camera1", Math.PI / 2, Math.PI / 4, 3, BABYLON.Vector3.Zero(), scene);
+          camera.attachControl(canvas, true);
+          const light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(1, 1, 0), scene);
+          const sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 2}, scene);
+          return scene;
+      };
+
+      const scene = createScene();
+      engine.runRenderLoop(function () {
+          scene.render();
+      });
+
+      window.addEventListener("resize", function () {
+          engine.resize();
+      });
+    </script>
   </body>
 </html>
