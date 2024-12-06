@@ -140,9 +140,10 @@ def update_slider() -> Response:
         recalculate_values(response_data, anchor_value)
 
     if "slider_value_engine_right" in response_data and "slider_value_engine_left" in response_data:
-        val_r = response_data["slider_value_engine_right"]
-        val_l = response_data["slider_value_engine_left"]
+        val_r: float = min(max(float(response_data["slider_value_engine_right"]) + 90, 10), 179)
+        val_l: float = min(max(float(response_data["slider_value_engine_left"]) + 90, 10), 179)
 
+        print(val_l, val_r)
         BUFFER["RENGINE"][2] = val_r == BUFFER["RENGINE"][0]
         BUFFER["RENGINE"][0] = val_r
 

@@ -158,7 +158,8 @@ input[type=range] {
 }
 
 .backgroundColor {
-    background-color: rgba(0, 0, 0, 0.39);
+    background-color: rgba(0, 0, 0, 0.6);
     border-radius: 10px;
+    padding: 3px;
 }
 
