@@ -130,7 +130,6 @@ def update_slider() -> Response:
         val_eng_left = max(min(val_eng_left, 90), -90)
         val_eng_right = max(min(val_eng_right, 90), -90)
         val_speed = float(slider_speed_secondary) - (remainsL + remainsR) / 2
-        print(f"remainL: {remainsL}, remainR: {remainsR}, engR: {val_eng_right}")
 
         response_data["slider_value_direction"] = slider_direction
         response_data["slider_value_engine_left"] = val_eng_left
@@ -140,6 +139,16 @@ def update_slider() -> Response:
     if need_recalculate:
         recalculate_values(response_data, anchor_value)
 
+    if "slider_value_engine_right" in response_data and "slider_value_engine_left" in response_data:
+        val_r = response_data["slider_value_engine_right"]
+        val_l = response_data["slider_value_engine_left"]
+
+        BUFFER["RENGINE"][2] = val_r == BUFFER["RENGINE"][0]
+        BUFFER["RENGINE"][0] = val_r
+
+        BUFFER["LENGINE"][2] = val_l == BUFFER["LENGINE"][0]
+        BUFFER["LENGINE"][0] = val_l
+
     return jsonify(response_data)
 
 
@@ -147,7 +156,6 @@ def recalculate_values(response_data: dict, anchor_value: str) -> None:
     """
     Контрольный перерасчет значений для исправления ошибок
     """
-    print(f"recalculate {anchor_value}")
     speed = float(response_data.get("slider_value_speed", 0))
     direction = float(response_data.get("slider_value_direction", 0))
     engine_left = float(response_data.get("slider_value_engine_left", 0))
@@ -159,7 +167,6 @@ def recalculate_values(response_data: dict, anchor_value: str) -> None:
 
     # Проверяем, выходят ли значения за пределы
     if engine_left != recalculated_engine_left or engine_right != recalculated_engine_right:
-        print(f"limit\nLeft: {engine_left}:{recalculated_engine_left}\nRight: {engine_right}:{recalculated_engine_right}")
         if anchor_value != "slider_engine_left":
             response_data["slider_value_engine_left"] = recalculated_engine_left
         if anchor_value != "slider_engine_right":
