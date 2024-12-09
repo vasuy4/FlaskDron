@@ -143,7 +143,6 @@ def update_slider() -> Response:
         val_r: float = min(max(float(response_data["slider_value_engine_right"]) + 90, 10), 179)
         val_l: float = min(max(float(response_data["slider_value_engine_left"]) + 90, 10), 179)
 
-        print(val_l, val_r)
         BUFFER["RENGINE"][2] = val_r == BUFFER["RENGINE"][0]
         BUFFER["RENGINE"][0] = val_r
 
