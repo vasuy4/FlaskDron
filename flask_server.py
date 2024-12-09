@@ -40,6 +40,9 @@ def serve_js(filename):
     return send_from_directory("templates/js", filename)
 
 
+@app.route("/models/<path:filename>")
+def serve_models(filename):
+    return send_from_directory("static/models", filename)
 
 @app.route("/update_slider", methods=["POST"])
 def update_slider() -> Response:
