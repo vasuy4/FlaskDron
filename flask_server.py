@@ -37,6 +37,7 @@ def main_menu():
 
 @app.route("/js/<path:filename>")
 def serve_js(filename):
+    print(filename)
     return send_from_directory("templates/js", filename)
 
 
