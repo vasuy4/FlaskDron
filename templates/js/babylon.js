@@ -131,4 +131,8 @@ class BasicScene {
       grid.rotate(BABYLON.Axis.Y, -Math.PI / 2, BABYLON.Space.WORLD);
     grid.alpha = alpha;
   }
+
+  getModelDron(){
+    // TODO Добавить получение модели дрона для изменения его угла в зависимости от его ползунков 
+  }
 }
