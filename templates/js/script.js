@@ -13,6 +13,8 @@ $(document).ready(function () {
     basicScene.engine.resize();
   });
 
+  let oldValueServo = 0;
+  let oldValueDirection = 0;
   function toRadians(degr) {
     return degr * Math.PI / 180;
   }
@@ -37,11 +39,11 @@ $(document).ready(function () {
       });
     } else mesh = null;
     if (mesh) {
-      mesh.rotation.x = toRadians(sliderValue)  // (BABYLON.Axis.X, toRadians(sliderValue), BABYLON.Space.WORLD);
+      mesh.rotate(BABYLON.Axis.X, toRadians(sliderValue - oldValueServo)/2, BABYLON.Space.WORLD);
     } else {
       console.log("Not loaded");
     }
-
+    oldValueServo = sliderValue;
     $.ajax({
       url: "/update_slider",
       type: "POST",
@@ -153,11 +155,23 @@ $(document).ready(function () {
   });
 
   $("#slider_direction").on("input", function () {
-    if (isProgrammingChange) return;
-
     var sliderValue = $(this).val();
     var sliderValueSpeed = $("#slider_speed").val();
 
+    let mesh;
+    if (basicScene.scene.modelMeshes) {
+      basicScene.scene.modelMeshes.forEach(meshh => {
+          mesh = meshh;
+      });
+    } else mesh = null;
+    if (mesh) {
+      mesh.rotate(BABYLON.Axis.Y, toRadians(sliderValue - oldValueDirection)/2, BABYLON.Space.WORLD);
+    } else {
+      console.log("Not loaded");
+    }
+    oldValueDirection = sliderValue;
+
+    if (isProgrammingChange) return;
     $.ajax({
       url: "/update_slider",
       type: "POST",
