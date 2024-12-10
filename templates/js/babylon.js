@@ -1,19 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // Ваш код инициализации Babylon.js
-  const canvas = document.getElementById("renderCanvas");
-
-  const basicScene = new BasicScene(canvas);
-
-  basicScene.engine.runRenderLoop(function () {
-    basicScene.scene.render();
-  });
-
-  window.addEventListener("resize", function () {
-    basicScene.engine.resize();
-  });
-});
-
-class BasicScene {
+export default class BasicScene {
   constructor(canvas) {
     this.engine = new BABYLON.Engine(canvas, true);
     this.scene = this.createScene();
@@ -70,23 +55,54 @@ class BasicScene {
   }
 
   createModel() {
+    return new Promise((resolve, reject) => {
+      BABYLON.SceneLoader.ImportMesh(
+        "",
+        "models/",
+        "model.gltf",
+        this.scene,
+        (meshes) => {
+          console.log("Model loaded:", meshes);
+          meshes.forEach((mesh) => {
+            mesh.scaling.scaleInPlace(0.3); // Уменьшение размера модели в 2 раза
+            mesh.rotate(BABYLON.Axis.X, -Math.PI / 4, BABYLON.Space.WORLD);
+            mesh.position.z = 15;
+          });
+
+          this.scene.modelMeshes = meshes;
+          resolve(meshes);
+        },
+        null,
+        (error) => {
+          reject(error);
+        }
+      );
+    });
+  }
+  
+  async initialize() {
+    await this.createModel();
+    console.log("Model initialization complete.");
+  }
+
+  createModel() {
     // Загрузка модели
     BABYLON.SceneLoader.ImportMesh(
       "",
       "models/",
       "model.gltf",
       this.scene,
-      function (meshes) {
+      (meshes) => {
         // Модель загружена, можно выполнить дополнительные действия
         console.log("Model loaded:", meshes);
-
+  
         // Масштабирование модели
         meshes.forEach((mesh) => {
           mesh.scaling.scaleInPlace(0.3); // Уменьшение размера модели в 2 раза
           mesh.rotate(BABYLON.Axis.X, -Math.PI / 4, BABYLON.Space.WORLD);
           mesh.position.z = 15;
         });
-
+  
         // Сохранение модели для последующего использования
         this.scene.modelMeshes = meshes;
       }
@@ -132,7 +148,14 @@ class BasicScene {
     grid.alpha = alpha;
   }
 
-  getModelDron(){
-    // TODO Добавить получение модели дрона для изменения его угла в зависимости от его ползунков 
+  getMeshDron(){
+    if (this.scene.modelMeshes) {
+      this.scene.modelMeshes.forEach(mesh => {
+          return mesh;
+      });
+    } else 
+    {
+      return null;
+    }
   }
 }

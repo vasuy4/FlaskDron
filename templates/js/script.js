@@ -1,5 +1,22 @@
+import BasicScene from "./babylon.js";
+
 $(document).ready(function () {
-    let isProgrammingChange = false;  // Флаг для отслеживания программного изменения
+  let isProgrammingChange = false;  // Флаг для отслеживания программного изменения
+
+  // Загрузка сцены с дроном из BabylonJS
+  const canvas = document.getElementById("renderCanvas");
+  const basicScene = new BasicScene(canvas);
+  basicScene.engine.runRenderLoop(function () {
+    basicScene.scene.render();
+  });
+  window.addEventListener("resize", function () {
+    basicScene.engine.resize();
+  });
+
+  function toRadians(degr) {
+    return degr * Math.PI / 180;
+  }
+
   function updateSlider(sliderId, sliderValueId, value) {
     isProgrammingChange = true;
     $("#" + sliderId)
@@ -11,8 +28,20 @@ $(document).ready(function () {
 
   $("#slider_servo").on("input", function () {
     if (isProgrammingChange) return;
-
     var sliderValue = $(this).val();
+
+    let mesh;
+    if (basicScene.scene.modelMeshes) {
+      basicScene.scene.modelMeshes.forEach(meshh => {
+          mesh = meshh;
+      });
+    } else mesh = null;
+    if (mesh) {
+      mesh.rotation.x = toRadians(sliderValue)  // (BABYLON.Axis.X, toRadians(sliderValue), BABYLON.Space.WORLD);
+    } else {
+      console.log("Not loaded");
+    }
+
     $.ajax({
       url: "/update_slider",
       type: "POST",
@@ -158,4 +187,6 @@ $(document).ready(function () {
       },
     });
   });
+  
+
 });
