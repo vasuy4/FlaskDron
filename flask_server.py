@@ -1,7 +1,7 @@
-from arduino_communication import send_command
+from arduino_communication import send_command, BUFFER_SENSORS
 from flask import Flask, render_template, request, jsonify, Response, send_from_directory
 import time
-from typing import Dict, List, Union, Tuple
+from typing import Dict, List, Union
 
 app = Flask(__name__)
 
@@ -43,6 +43,22 @@ def serve_js(filename):
 @app.route("/models/<path:filename>")
 def serve_models(filename):
     return send_from_directory("static/models", filename)
+
+
+@app.route("/get_sensor_data", methods=["POST"])
+def update_sensor_data() -> Response:
+    """
+    Обновление значений датчиков на странице
+    """
+    temperature = BUFFER_SENSORS["temperature"]
+    pressure = BUFFER_SENSORS["pressure"]
+    depth = BUFFER_SENSORS["depth"]
+    return jsonify({
+        "temperature": temperature,
+        "pressure": pressure,
+        "depth": depth
+    })
+
 
 @app.route("/update_slider", methods=["POST"])
 def update_slider() -> Response:

@@ -28,6 +28,21 @@ $(document).ready(function () {
     isProgrammingChange = false;
   }
 
+
+  function updateSensorData() {
+    $.ajax({
+      url: "/get_sensor_data",
+      type: "POST",
+      success: function (response) {
+        $("#temperature").text(response.temperature);
+        $("#pressure").text(response.pressure);
+        $("#depth").text(response.depth);
+      },
+    });
+  }
+  setInterval(updateSensorData, 2000);
+
+
   $("#slider_servo").on("input", function () {
     if (isProgrammingChange) return;
     var sliderValue = $(this).val();
