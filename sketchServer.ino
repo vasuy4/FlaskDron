@@ -6,7 +6,7 @@
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 
 // Создаем объект для работы с сервоприводом
-Servo myServo;
+Servo myServo, LENGINE;
 
 // Создаем объект для работы с Ethernet
 EthernetServer server(80);
@@ -14,6 +14,7 @@ EthernetServer server(80);
 void setup() {
   // Инициализируем сервопривод и подключаем его к пину 9
   myServo.attach(9);
+  LENGINE.attach(10);
 
   // Инициализируем Ethernet Shield с использованием DHCP
   if (Ethernet.begin(mac) == 0) {
@@ -61,6 +62,7 @@ void loop() {
             client.print(command);
           } else if (prefix == "LENGINE") {
             // Код для левого двигателя
+            LENGINE.write(value);
             client.print(command);
           } else if (prefix == "RENGINE") {
             // Код для правого сервопривода
