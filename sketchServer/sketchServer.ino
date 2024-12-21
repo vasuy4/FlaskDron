@@ -7,13 +7,19 @@ byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 
 // Создаем объект для работы с сервоприводом
 Servo myServo;
+Servo myServo2;
 
 // Создаем объект для работы с Ethernet
 EthernetServer server(80);
 
+const int neutralPosition = 90;
+const int minInputAngle = -45;
+const int maxInputAngle = 45;
+
 void setup() {
   // Инициализируем сервопривод и подключаем его к пину 9
   myServo.attach(9);
+  myServo2.attach(6);
 
   // Инициализируем Ethernet Shield с использованием DHCP
   if (Ethernet.begin(mac) == 0) {
@@ -55,7 +61,7 @@ void loop() {
           int value = atoi(command.substring(underscorePos + 1).c_str());
 
           if (prefix == "SERVO") {
-            myServo.write(value);
+            setBothServos(value);
             Serial.print("Set angle to: ");
             Serial.println(value);
             client.print(command);
@@ -80,4 +86,18 @@ void loop() {
     client.stop();
     Serial.println("Client disconnected");
   }
+}
+
+void setBothServos(int inputAngle) {
+  if (inputAngle < minInputAngle) {
+    inputAngle = minInputAngle;
+  } else if (inputAngle > maxInputAngle) {
+    inputAngle = maxInputAngle;
+  }
+
+  int servoAngle = neutralPosition + inputAngle;
+  servoAngle = constrain(servoAngle, 0, 180);
+
+  myServo.write(servoAngle);
+  myServo2.write(servoAngle);
 }
