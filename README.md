@@ -6,9 +6,14 @@
 # 2. Загрузите скетч ./sketchServer.ino в Arduino
 # 3. Установите Python 3.12
 # 4. Установка зависимостей
+### 4.1 Установка зависимостей для python
 cmd
 ```cmd
 pip install Flask
+```
+### 4.2 Установка зависимостей для js
+```cmd
+npm install
 ```
 # 5. Запуск проекта через ./main.py
 cmd
