@@ -36,7 +36,7 @@ def auto_get_vals_sensors() -> None:
     g: float = 9.81  # гравитационная постоянная
     while True:
         time.sleep(2)
-        response: str = send_command("GETSENSDATA")
+        response: str = send_command("GETSENSDATA_0")
         # response: str = f"{random.randint(1, 100)}_{random.randint(1, 200000)}"
         temperature, pressure = response.split("_")
         temperature, pressure = float(temperature), float(pressure)

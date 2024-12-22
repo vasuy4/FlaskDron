@@ -15,16 +15,7 @@ void setup() {
   // Инициализируем сервопривод и подключаем его к пину 9
   myServo.attach(9);
 
-  // Инициализируем Ethernet Shield с использованием DHCP
-  if (Ethernet.begin(mac) == 0) {
-    Serial.println("Failed to configure Ethernet using DHCP");
-    // Если DHCP не удалось, можно использовать статический IP-адрес
-    // Ethernet.begin(mac, IPAddress(192, 168, 1, 177));
-  } else {
-    Serial.print("DHCP assigned IP: ");
-    Serial.println(Ethernet.localIP());
-  }
-
+  Ethernet.begin(mac, IPAddress(192, 168, 1, 100));
   // Запускаем сервер
   server.begin();
 
@@ -67,7 +58,7 @@ void loop() {
             client.print(command);
           } else if (prefix == "GETSENSDATA") {
             // Код для получения данных с датчиков
-            client.print("Data-temp_Data-depth");
+            client.print("5_50");  // Data-temp_Data-depth
           } else {
             client.print("Unknown command");
           }

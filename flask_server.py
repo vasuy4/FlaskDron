@@ -27,6 +27,7 @@ def auto_update() -> None:
         for command, value in BUFFER.items():
             if not value[2] and time.time() - value[1] > 0.5:
                 send_command("{}_{}\n".format(command, value[0]))
+                value[2] = True
         time.sleep(0.5)
 
 
