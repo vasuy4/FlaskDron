@@ -89,7 +89,7 @@ button {
 
 .control_servoDir {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
 }
 
 .control_speed_direction {

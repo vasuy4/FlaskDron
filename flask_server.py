@@ -14,6 +14,8 @@ app = Flask(__name__)
 """
 BUFFER: Dict[str, List[Union[float, float, bool]]] = {
     "SERVO": [90, time.time(), True],
+    "LSERVO": [90, time.time(), True],
+    "RSERVO": [90, time.time(), True],
     "LENGINE": [90, time.time(), True],
     "RENGINE": [90, time.time(), True],
 }
@@ -67,6 +69,8 @@ def update_slider() -> Response:
     Обновляет значение слайдера и буфера отправки команды на ардуино
     """
     slider_servo = request.json.get("slider_servo")
+    slider_servoL = request.json.get("slider_servoL")
+    slider_servoR = request.json.get("slider_servoR")
 
     slider_engine_left = request.json.get("slider_engine_left")
     slider_engine_right = request.json.get("slider_engine_right")
@@ -85,6 +89,16 @@ def update_slider() -> Response:
     response_data = {}
     need_recalculate = False
 
+    if slider_servoL is not None:
+        response_data["slider_value_servoL"] = slider_servoL
+        BUFFER["LSERVO"][0] = float(slider_servoL) + 90
+        BUFFER["LSERVO"][2] = False
+        print("resp-dataL", response_data)
+    if slider_servoR is not None:
+        response_data["slider_value_servoR"] = slider_servoR
+        BUFFER["RSERVO"][0] = float(slider_servoR) + 90
+        BUFFER["RSERVO"][2] = False
+        print("resp-dataR", response_data)
     if slider_servo is not None:
         response_data["slider_value_servo"] = slider_servo
         value_command: float = min(max(float(slider_servo) + 90, 10), 179)

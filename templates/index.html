@@ -32,10 +32,26 @@
 
           <div class="control_servoDir margin2">
             <div class="control_servo_engine backgroundColor">
-              <p class="margin2 servoWordControl">Servo</p>
-              <p class="margin2 servoWordControl"><span id="slider_value_servo">0</span></p>
+              <p class="margin2 servoWordControl">ServoL</p>
+              <p class="margin2 servoWordControl"><span id="slider_value_servoL">0</span></p>
               <p class="margin2 servoWordControl">90</p>
+              <input type="range" min="-90" max="90" id="slider_servoL" class="slider_servo_engine margin2 slider_vertical" />
+              <p class="margin2 servoWordControl">-90</p>
+            </div>
+            
+            <div class="control_servo_engine backgroundColor">
+              <p class="margin2 servoWordControl">Vertical</p>
+              <p class="margin2 servoWordControl"><span id="slider_value_servo">0</span></p>
+              <p class="margin2 servoWordControl">Up</p>
               <input type="range" min="-90" max="90" id="slider_servo" class="slider_servo_engine margin2 slider_vertical" />
+              <p class="margin2 servoWordControl">Down</p>
+            </div>
+
+            <div class="control_servo_engine backgroundColor">
+              <p class="margin2 servoWordControl">ServoR</p>
+              <p class="margin2 servoWordControl"><span id="slider_value_servoR">0</span></p>
+              <p class="margin2 servoWordControl">90</p>
+              <input type="range" min="-90" max="90" id="slider_servoR" class="slider_servo_engine margin2 slider_vertical" />
               <p class="margin2 servoWordControl">-90</p>
             </div>
           </div>

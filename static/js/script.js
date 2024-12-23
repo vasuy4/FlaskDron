@@ -71,6 +71,34 @@ $(document).ready(function () {
     });
   });
 
+  $("#slider_servoL").on("input", function () {
+    var sliderValue = $(this).val();
+
+    $.ajax({
+      url: "/update_slider",
+      type: "POST",
+      contentType: "application/json",
+      data: JSON.stringify({ slider_servoL: sliderValue }),
+      success: function (response) {
+        $("#slider_value_servoL").text(response.slider_value_servoL);
+      },
+    });
+  });
+
+  $("#slider_servoR").on("input", function () {
+    var sliderValue = $(this).val();
+
+    $.ajax({
+      url: "/update_slider",
+      type: "POST",
+      contentType: "application/json",
+      data: JSON.stringify({ slider_servoR: sliderValue }),
+      success: function (response) {
+        $("#slider_value_servoR").text(response.slider_value_servoR);
+      },
+    });
+  });
+
   $("#slider_engine_left").on("input", function () {
     if (isProgrammingChange) return;
 
