@@ -16,6 +16,35 @@ $(document).ready(function () {
 
   let oldValueServo = 0;
   let oldValueDirection = 0;
+
+  const oneServoModeCheckbox = document.getElementById('oneServoMode');
+  const sliderServoL = document.getElementById('slider_servoL');
+  const sliderServoR = document.getElementById('slider_servoR');
+  const sliderServo = document.getElementById('slider_servo');
+
+  // Изначально скрываем или показываем слайдеры в зависимости от режима
+  oneServoModeCheckbox.checked = false; // Установите начальное состояние
+  updateInteractivity();
+
+  // Обработчик изменения состояния чекбокса
+  oneServoModeCheckbox.addEventListener('change', function () {
+    updateInteractivity();
+  });
+
+  function updateInteractivity() {
+    if (oneServoModeCheckbox.checked) {
+      // Включаем slider_servo и отключаем slider_servoL и slider_servoR
+      sliderServo.disabled = false;
+      sliderServoL.disabled = true;
+      sliderServoR.disabled = true;
+    } else {
+      // Включаем slider_servoL и slider_servoR, отключаем slider_servo
+      sliderServo.disabled = true;
+      sliderServoL.disabled = false;
+      sliderServoR.disabled = false;
+    }
+  }
+
   function toRadians(degr) {
     return degr * Math.PI / 180;
   }
@@ -67,6 +96,16 @@ $(document).ready(function () {
       data: JSON.stringify({ slider_servo: sliderValue }),
       success: function (response) {
         $("#slider_value_servo").text(response.slider_value_servo);
+        updateSlider(
+          "slider_servoL",
+          "slider_value_servoL",
+          response.slider_value_servo
+        );
+        updateSlider(
+          "slider_servoR",
+          "slider_value_servoR",
+          response.slider_value_servo
+        );
       },
     });
   });

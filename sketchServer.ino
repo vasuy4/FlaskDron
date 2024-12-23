@@ -6,14 +6,16 @@
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 
 // Создаем объект для работы с сервоприводом
-Servo myServo;
+Servo myServoL;
+Servo myServoR;
 
 // Создаем объект для работы с Ethernet
 EthernetServer server(80);
 
 void setup() {
   // Инициализируем сервопривод и подключаем его к пину 9
-  myServo.attach(9);
+  myServoL.attach(9);
+  myServoR.attach(8);
 
   Ethernet.begin(mac, IPAddress(192, 168, 1, 100));
   // Запускаем сервер
@@ -46,10 +48,15 @@ void loop() {
           int value = atoi(command.substring(underscorePos + 1).c_str());
 
           if (prefix == "SERVO") {
-            myServo.write(value);
+            myServoL.write(value);
+            myServoR.write(value);
             Serial.print("Set angle to: ");
             Serial.println(value);
             client.print(command);
+          } else if (prefix == "LSERVO") {
+            myServoL.write(value);
+          } else if (prefix == "RSERVO") {
+            myServoR.write(value);
           } else if (prefix == "LENGINE") {
             // Код для левого двигателя
             client.print(command);
