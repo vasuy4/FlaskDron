@@ -93,12 +93,10 @@ def update_slider() -> Response:
         response_data["slider_value_servoL"] = slider_servoL
         BUFFER["LSERVO"][0] = float(slider_servoL) + 90
         BUFFER["LSERVO"][2] = False
-        print("resp-dataL", response_data)
     if slider_servoR is not None:
         response_data["slider_value_servoR"] = slider_servoR
         BUFFER["RSERVO"][0] = float(slider_servoR) + 90
         BUFFER["RSERVO"][2] = False
-        print("resp-dataR", response_data)
     if slider_servo is not None:
         response_data["slider_value_servo"] = slider_servo
         value_command: float = min(max(float(slider_servo) + 90, 10), 179)
