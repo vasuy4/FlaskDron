@@ -23,14 +23,14 @@ BUFFER: Dict[str, List[Union[float, float, bool]]] = {
 
 def auto_update() -> None:
     """
-    Поток автоматической отправки команд на ардуино каждые 0.5 секунды
+    Поток автоматической отправки команд на ардуино каждую секунду
     """
     while True:
         for command, value in BUFFER.items():
             if not value[2] and time.time() - value[1] > 0.5:
                 send_command("{}_{}\n".format(command, value[0]))
                 value[2] = True
-        time.sleep(0.5)
+        time.sleep(1)
 
 
 @app.route("/")
