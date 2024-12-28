@@ -89,7 +89,7 @@ button {
 
 .control_servoDir {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
 }
 
 .control_speed_direction {
@@ -163,3 +163,13 @@ input[type=range] {
     padding: 3px;
 }
 
+.mods {
+    position: absolute;
+    font-size: medium;
+}
+
+/* Стили для отключенных элементов */
+input[type="range"]:disabled {
+    opacity: 0.5; /* Уменьшаем непрозрачность */
+    cursor: not-allowed; /* Изменяем курсор */
+}

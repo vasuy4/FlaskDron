@@ -1,19 +1,21 @@
-from arduino_communication import send_command
+from arduino_communication import send_command, BUFFER_SENSORS
 from flask import Flask, render_template, request, jsonify, Response, send_from_directory
 import time
-from typing import Dict, List, Union, Tuple
+from typing import Dict, List, Union
 
 app = Flask(__name__)
 
 """
 ключ - наименование команды
-значение - кортеж из:
+значение - список из:
 1) Значение команды
 2) Последняя отправка на ардуино
 3) Было ли отправлено это значение
 """
 BUFFER: Dict[str, List[Union[float, float, bool]]] = {
     "SERVO": [90, time.time(), True],
+    "LSERVO": [90, time.time(), True],
+    "RSERVO": [90, time.time(), True],
     "LENGINE": [90, time.time(), True],
     "RENGINE": [90, time.time(), True],
 }
@@ -21,13 +23,14 @@ BUFFER: Dict[str, List[Union[float, float, bool]]] = {
 
 def auto_update() -> None:
     """
-    Поток автоматической отправки команд на ардуино каждые 0.5 секунды
+    Поток автоматической отправки команд на ардуино каждую секунду
     """
     while True:
         for command, value in BUFFER.items():
             if not value[2] and time.time() - value[1] > 0.5:
                 send_command("{}_{}\n".format(command, value[0]))
-        time.sleep(0.5)
+                value[2] = True
+        time.sleep(1)
 
 
 @app.route("/")
@@ -44,12 +47,30 @@ def serve_js(filename):
 def serve_models(filename):
     return send_from_directory("static/models", filename)
 
+
+@app.route("/get_sensor_data", methods=["POST"])
+def update_sensor_data() -> Response:
+    """
+    Обновление значений датчиков на странице
+    """
+    temperature = BUFFER_SENSORS["temperature"]
+    pressure = BUFFER_SENSORS["pressure"]
+    depth = BUFFER_SENSORS["depth"]
+    return jsonify({
+        "temperature": temperature,
+        "pressure": pressure,
+        "depth": depth
+    })
+
+
 @app.route("/update_slider", methods=["POST"])
 def update_slider() -> Response:
     """
     Обновляет значение слайдера и буфера отправки команды на ардуино
     """
     slider_servo = request.json.get("slider_servo")
+    slider_servoL = request.json.get("slider_servoL")
+    slider_servoR = request.json.get("slider_servoR")
 
     slider_engine_left = request.json.get("slider_engine_left")
     slider_engine_right = request.json.get("slider_engine_right")
@@ -68,6 +89,14 @@ def update_slider() -> Response:
     response_data = {}
     need_recalculate = False
 
+    if slider_servoL is not None:
+        response_data["slider_value_servoL"] = slider_servoL
+        BUFFER["LSERVO"][0] = float(slider_servoL) + 90
+        BUFFER["LSERVO"][2] = False
+    if slider_servoR is not None:
+        response_data["slider_value_servoR"] = slider_servoR
+        BUFFER["RSERVO"][0] = float(slider_servoR) + 90
+        BUFFER["RSERVO"][2] = False
     if slider_servo is not None:
         response_data["slider_value_servo"] = slider_servo
         value_command: float = min(max(float(slider_servo) + 90, 10), 179)

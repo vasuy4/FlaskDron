@@ -5,13 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UnderWaterDron</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='dist/bundle.js') }}?v=1"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
-    <script src="https://cdn.babylonjs.com/babylon.js"></script>
-    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
     <script type="module" src="js/script.js"></script>
   </head>
   <body>
+    <label class="mods">
+      <input type="checkbox" id="oneServoMode" />
+      One Servo Mode
+    </label>
+
     <div class="controlPanel">
       <div class="control">
         <div class="controlChild">
@@ -31,10 +34,26 @@
 
           <div class="control_servoDir margin2">
             <div class="control_servo_engine backgroundColor">
-              <p class="margin2 servoWordControl">Servo</p>
-              <p class="margin2 servoWordControl"><span id="slider_value_servo">0</span></p>
+              <p class="margin2 servoWordControl">ServoL</p>
+              <p class="margin2 servoWordControl"><span id="slider_value_servoL">0</span></p>
               <p class="margin2 servoWordControl">90</p>
+              <input type="range" min="-90" max="90" id="slider_servoL" class="slider_servo_engine margin2 slider_vertical" />
+              <p class="margin2 servoWordControl">-90</p>
+            </div>
+            
+            <div class="control_servo_engine backgroundColor">
+              <p class="margin2 servoWordControl">Vertical</p>
+              <p class="margin2 servoWordControl"><span id="slider_value_servo">0</span></p>
+              <p class="margin2 servoWordControl">Up</p>
               <input type="range" min="-90" max="90" id="slider_servo" class="slider_servo_engine margin2 slider_vertical" />
+              <p class="margin2 servoWordControl">Down</p>
+            </div>
+
+            <div class="control_servo_engine backgroundColor">
+              <p class="margin2 servoWordControl">ServoR</p>
+              <p class="margin2 servoWordControl"><span id="slider_value_servoR">0</span></p>
+              <p class="margin2 servoWordControl">90</p>
+              <input type="range" min="-90" max="90" id="slider_servoR" class="slider_servo_engine margin2 slider_vertical" />
               <p class="margin2 servoWordControl">-90</p>
             </div>
           </div>
@@ -82,9 +101,9 @@
       </div>
 
       <div class="sensorsData">
-        <p>t° =</p>
-        <p>p =</p>
-        <p>l =</p>
+        <p>t° = <span id="temperature">0</span> ℃</p>
+        <p>p = <span id="pressure">0</span> Па</p>
+        <p>h = <span id="depth">0</span> м</p>
       </div>
     </div>
   </body>

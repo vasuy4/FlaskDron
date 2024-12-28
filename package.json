@@ -1,0 +1,24 @@
+{
+  "name": "flaskdron",
+  "version": "1.0.0",
+  "description": "- Установите статический IP-адрес для адаптера 192.168.1.1, с маской подсети 255.255.255.0\r # 2. Загрузите скетч ./sketchServer.ino в Arduino\r # 3. Установите Python 3.12\r # 4. Установка зависимостей\r cmd\r ```cmd\r pip install Flask\r ```\r # 5. Запуск проекта через ./main.py\r cmd\r ```cmd\r python ./main.py\r ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack serve"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babylonjs": "^7.41.1",
+    "babylonjs-loaders": "^7.41.1",
+    "jquery": "^3.7.1"
+  },
+  "devDependencies": {
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.0"
+  }
+}

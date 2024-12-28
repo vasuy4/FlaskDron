@@ -75,6 +75,10 @@ class NTC
 
 NTC ntc(A0, 10000, 3950);
 
+float lint (float a, float b, float f) {
+    return a + f * (b - a);
+}
+
 // MAC-адрес вашего Ethernet Shield (можно использовать любой)
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 
@@ -86,8 +90,8 @@ Servo myServoR;
 Servo myESC_L, myESC_R;
 int myESC_CurSpeedL = 89, 
     myESC_CurSpeedR = 89,
-    myESC_TargetSpeedL = 180, 
-    myESC_TargetSpeedR = 0;
+    myESC_TargetSpeedL = 89, 
+    myESC_TargetSpeedR = 89;
 
 // Создаем объект для работы с Ethernet
 EthernetServer server(80);
@@ -117,6 +121,7 @@ void setup() {
 
 void loop() {
   // Ожидаем подключения клиента
+
   EthernetClient client = server.available();
   if (client) {
     Serial.println("New client");
@@ -159,7 +164,7 @@ void loop() {
 
             float valPress = analogRead(A1);
             float newton = 0.00005 * valPress * valPress * - valPress *  + 0.2162;
-            float pascal = newton / 0.003848; // 0,003848 - площадь датчика
+            float pascal = newton / 0,003848; // 0,003848 - площадь датчика
             String data = String(tempAvg)  + "_" + String(pascal);
             client.print(data);  // Data-temp_Data-depth
           } else {
