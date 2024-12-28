@@ -170,21 +170,35 @@ void loop() {
           } else {
             client.print("Unknown command");
           }
-          while ((abs(myESC_CurSpeedL - myESC_TargetSpeedL) >= 1) || 
-                 (abs(myESC_TargetSpeedR - myESC_TargetSpeedR) >= 1)){
-            delay(15);
-            myESC_CurSpeedL = lint(myESC_CurSpeedL, myESC_TargetSpeedL, 0.3);
-            myESC_CurSpeedR = lint(myESC_CurSpeedR, myESC_TargetSpeedR, 0.3);
+          while ((abs(myESC_TargetSpeedL - myESC_CurSpeedL) > 1) || 
+                 (abs(myESC_TargetSpeedR - myESC_CurSpeedR) > 1)){
+            delay(20);
+            // ENGINE L Меняем скорость постепенно
+            int buffDirection = myESC_TargetSpeedL - myESC_CurSpeedL;
+            if(buffDirection < 0){
+              myESC_CurSpeedL-=1;
+            }else if(buffDirection > 0){
+              myESC_CurSpeedL+=1;
+            }
+            // ENGINE R Меняем скорость постепенно
+            buffDirection = myESC_TargetSpeedR - myESC_CurSpeedR;
+            if(buffDirection < 0){
+              myESC_CurSpeedR-=1;
+            }else if(buffDirection > 0){
+              myESC_CurSpeedR+=1;
+            }
             Serial.println("Engines Cur Speed - L:" + String(myESC_CurSpeedL) + " | R:" + String(myESC_CurSpeedR));
             myESC_L.write(myESC_CurSpeedL);
             myESC_R.write(myESC_CurSpeedR);
           }
+          
         } else {
           client.print("-1");
         }
       }
     }
 
+    
     // Закрываем соединение
     delay(1);
     client.stop();
